@@ -1,8 +1,4 @@
-<style>
-tr:nth-child(even) {
-    background-color: #F5F5F5;
-}
-</style>#!/bin/sh
+#!/bin/sh
 # This file is in the public domain
 # $FreeBSD: head/tools/tools/build_option_survey/mkhtml.sh 338524 2018-09-07 15:48:01Z rgrimes $
 
