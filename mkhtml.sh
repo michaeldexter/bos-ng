@@ -1,6 +1,5 @@
 #!/bin/sh
 # This file is in the public domain
-# $FreeBSD: head/tools/tools/build_option_survey/mkhtml.sh 338524 2018-09-07 15:48:01Z rgrimes $
 
 set -e
 
@@ -80,11 +79,10 @@ tr:nth-child(even) {
 ' >> $H
 
 echo '
-<H2>The table is explained at the bottom</H2>
-<HR>
+<H2>FreeBSD Build Option Survey Results</H2>
 ' >> $H
 
-echo '<TABLE  border="1" cellspacing="0">' >> $H
+echo '<TABLE border="1" cellspacing="0">' >> $H
 
 echo "<TR>" >> $H
 echo "<TH ROWSPAN=2>src.conf</TH>" >> $H
@@ -115,7 +113,56 @@ majcol ( ) (
 	elif [ -f $3/$1/_.success ] ; then
 		table_td $2 $1 $3 $4 >> $H
 	else
-		echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
+		if [ "$1" = "bw" ] ; then
+			opt=`basename $m`
+			if [ -f "$m/bw/_.bw" ] ; then
+				bw_fail=0
+				grep -q "World build completed" $m/bw/_.bw && bw_fail=1
+
+				if [ "$bw_fail" = "1" ] ; then
+echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H	
+				else
+					cp $m/bw/_.bw ${HDIR}/${opt}-bw.log
+					xz -9 ${HDIR}/${opt}-bw.log
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-bw.log.xz\">failure log</A></TD>" >> $H
+				fi
+			else
+				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
+			fi
+		elif [ "$1" = "iw" ] ; then
+			opt=`basename $m`
+			if [ -f "$m/iw/_.iw" ] ; then
+				iw_fail=0
+				grep -q "World build completed" $m/iw/_.iw && iw_fail=1
+
+				if [ "$iw_fail" = "1" ] ; then
+echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H	
+				else
+					cp $m/iw/_.iw ${HDIR}/${opt}-iw.log
+					xz -9 ${HDIR}/${opt}-iw.log
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-iw.log.xz\">failure log</A></TD>" >> $H
+				fi
+			else
+				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
+			fi
+#		elif [ "$1" = "w" ] ; then
+		else
+			opt=`basename $m`
+			if [ -f "$m/w/_.w" ] ; then
+				w_fail=0
+				grep -q "World build completed" $m/w/_.w && w_fail=1
+
+				if [ "$w_fail" = "1" ] ; then
+echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H
+				else
+					cp $m/w/_.w ${HDIR}/${opt}-w.log
+					xz -9 ${HDIR}/${opt}-w.log
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-w.log.xz\">failure log</A></TD>" >> $H
+				fi
+			else
+				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
+			fi
+		fi
 	fi
 )
 
@@ -139,7 +186,14 @@ do
 	echo "</PRE></TD>" >> $H
 	echo "<TD><PRE>" >> $H
 	if [ -f $m/bw/_.sc ] ; then
-		comm -13 ${RDIR}/Ref/_.sc $m/bw/_.sc >> $H
+		src_env=0
+		grep -q src-env.conf $m/bw/_.sc && src_env=1
+		if [ "$src_env" = "1" ] ; then
+#			echo "$o can only be set in src-env.conf" >> $H
+			echo "Set in src-env.conf" >> $H
+		else
+			comm -13 ${RDIR}/Ref/_.sc $m/bw/_.sc >> $H
+		fi
 	fi
 	echo "</PRE></TD>" >> $H
 
@@ -150,7 +204,6 @@ do
 done
 echo "</TABLE>" >> $H
 echo '
-<HR>
 <H2>How to read this table</H2>
 <P>
 The table has five major columns.
@@ -213,15 +266,6 @@ in the table
 <LI><P><B>Delta</B></P>
 <P>Size change in kilobytes relative to the option not be given</P>
 </LI>
-</OL>
+</OL>' >> $H
 
-<HR>' >> $H
-echo '
-<p>
-    <a href="http://validator.w3.org/check?uri=referer"><img
-        src="http://www.w3.org/Icons/valid-html401"
-        alt="Valid HTML 4.01 Transitional" height="31" width="88"></a>
-</p>
-
-' >> $H
 echo "</HTML>" >> $H
