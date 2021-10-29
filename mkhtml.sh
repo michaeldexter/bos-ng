@@ -124,7 +124,7 @@ echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H
 				else
 					cp $m/bw/_.bw ${HDIR}/${opt}-bw.log
 					xz -9 ${HDIR}/${opt}-bw.log
-echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-bw.log.xz\">failure log</A></TD>" >> $H
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-bw.log.xz\">buildlog</A></TD>" >> $H
 				fi
 			else
 				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
@@ -140,7 +140,7 @@ echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H
 				else
 					cp $m/iw/_.iw ${HDIR}/${opt}-iw.log
 					xz -9 ${HDIR}/${opt}-iw.log
-echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-iw.log.xz\">failure log</A></TD>" >> $H
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-iw.log.xz\">build log</A></TD>" >> $H
 				fi
 			else
 				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
@@ -157,7 +157,7 @@ echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H
 				else
 					cp $m/w/_.w ${HDIR}/${opt}-w.log
 					xz -9 ${HDIR}/${opt}-w.log
-echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-w.log.xz\">failure log</A></TD>" >> $H
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-w.log.xz\">build log</A></TD>" >> $H
 				fi
 			else
 				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
