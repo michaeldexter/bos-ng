@@ -124,7 +124,7 @@ echo "<TD align=center COLSPAN=5>false positive?</TD>" >> $H
 				else
 					cp $m/bw/_.bw ${HDIR}/${opt}-bw.log
 					xz -9 ${HDIR}/${opt}-bw.log
-echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-bw.log.xz\">buildlog</A></TD>" >> $H
+echo "<TD align=center COLSPAN=5><A HREF=\"${opt}-bw.log.xz\">build log</A></TD>" >> $H
 				fi
 			else
 				echo "<TD align=center COLSPAN=5>failed</TD>" >> $H
